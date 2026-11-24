@@ -10,11 +10,25 @@ import {
 } from 'ai';
 import {saveChat} from "@/lib/chat/cruds";
 import { zoekVacatures } from '@/lib/tools/zoekVacatures';
+import { analyseerVacature } from '@/lib/tools/analyseerVacature';
 
 export async function POST(request: Request) {
   // TODO: pas de instructies aan, zodat de assistent ook je tools mag gebruiken en geen vacatures verzint
   // DONE
-  const CONTEXT = 'Je bent een assistent die antwoorden mag geven over vacatures en op internet mag zoeken naar vacatures middels tools. verzin geen informatie maar meld als iets onbekend is met "deze info is onbekend" . Antwoord in het nederlands in maximaal 9 zinnen'
+  // const CONTEXT = 'Je bent een assistent die antwoorden mag geven over vacatures en op internet mag zoeken naar vacatures middels tools. verzin geen informatie maar meldt als iets onbekend is met "deze info is onbekend" . Antwoord in het nederlands in maximaal 9 zinnen'
+  const CONTEXT = `
+Je bent een behulpzame Nederlandstalige assistent.
+
+- Gebruik zoekVacatures wanneer de gebruiker actuele vacatures wil zoeken.
+- Gebruik analyseerVacature wanneer de gebruiker een vacaturetekst plakt of vraagt om een vacaturetekst te analyseren.
+- Geef de volledige vacaturetekst door en verkort het niet.
+- Als analyseerVacature een foutmelding geeft, vertel de gebruiker dat de analyse niet is gelukt.
+- Probeer de vacature niet alsnog zelf te analyseren of samen te vatten.
+- Verzin geen gegevens en presenteer geen analyse als succesvol wanneer de tool is mislukt.
+- Gebruik geen tool voor algemene vragen.
+- Verzin nooit vacaturegegevens.
+- Als informatie ontbreekt, geef aan dat deze onbekend is.
+`;
   const TEMPERATURE = 0.7
   const MAX_OUTPUT_TOKENS = 500
 
@@ -40,6 +54,7 @@ export async function POST(request: Request) {
       //DONE
       tools: {
         zoekVacatures,
+        analyseerVacature,
       },
       // TODO: laat het model meerdere stappen zetten met stopWhen: isStepCount(...)
       //DONE

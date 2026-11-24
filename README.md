@@ -53,11 +53,31 @@ Zorg ervoor dat je applicatie minimaal aan de volgende eisen voldoet:
 > **Beantwoord de volgende vragen voordat je verdergaat:**
 >
 > 1. Welke API heb je gekozen, en waarom past die bij je applicatie? Welke andere API heb je overwogen, en waarom viel die af?
+
+Adzuna gaf een API die binnen marges gratis te gebruiken is en Nederlandse vacatures bevat
+
 > 2. Welke limieten en voorwaarden gelden er voor jouw API, en wat betekent dat voor je applicatie?
+
+Maximaal 25 calls per dag, 5000/maand en 20000/maand
+
 > 3. Wie voert de tool uit: het model of jouw server? Wat stuurt het model precies naar jouw applicatie als het een tool wil gebruiken?
+
+Vercel AI SDK ontvangt de toolaanroep en voert de bijbehorende execute-functie uit op mijn server 
+In mijn applicatie heeft de tool twee invoervelden:
+- what: de functie of het zoekwoord waarop gezocht moet worden.
+- where: de plaats waar gezocht moet worden.
+
 > 4. Waarom heb je `stopWhen` nodig? Wat gebeurt er als je het weglaat, en waarom stel je een maximum in?
+
+stopWhen bepaalt wanneer het model moet stoppen met het uitvoeren van toolstappen. Door een maximum in te stellen voorkom ik dat het model onnodig lang doorgaat.
+
 > 5. Waarom controleer je de response van een externe API met Zod, terwijl je die API niet zelf hebt gebouwd?
+
+Met Zod controleer ik of de response bruikbaar is voordat mijn applicatie de. Als de gegevens niet aan het schema voldoen, kan ik een foutmelding geven in plaats van dat mijn applicatie onverwacht vastloopt.
+
 > 6. Waarom geef je niet de volledige response van de API terug aan het model?
+
+Hierdoor krijgt het model alleen de informatie die nodig is om de gebruiker te helpen.
 
 ### 2. Maak van je Les 11-functionaliteit een tool
 
