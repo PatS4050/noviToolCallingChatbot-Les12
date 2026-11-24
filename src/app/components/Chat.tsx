@@ -51,7 +51,7 @@ export default function Chat ({ id, initialMessages }: ChatProps) {
 
     return (
         <main className="mx-auto flex h-screen w-full max-w-2xl flex-col p-4">
-            <h1 className="mb-4 text-2xl font-bold">Les 9 Chatbot</h1>
+            <h1 className="mb-4 text-2xl font-bold">Les 12 Chatbot</h1>
 
             <div className="flex-1 space-y-3 overflow-y-auto rounded-lg border border-gray-200 bg-white p-4">
                 {messages.length === 0 && (

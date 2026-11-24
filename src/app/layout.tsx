@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Les 9 Chatbot',
+  title: 'Les 12 Chatbot',
   description: 'Eenvoudige AI-chatinterface met Next.js, de Vercel AI SDK en OpenAI',
 };
 
