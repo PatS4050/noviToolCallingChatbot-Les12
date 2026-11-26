@@ -77,10 +77,14 @@ export default function Chat ({ id, initialMessages }: ChatProps) {
                             {/*    part.type === 'text' ? <span key={index}>{part.text}</span> : null,*/}
                             {/*)}*/}
                             {message.parts.map((part, index) => {
-                                if (part.type === 'text') {
+                                // if (part.type === 'text') {
+                                //     return <span key={index}>{part.text}</span>;
+                                // }
+                                // Toon altijd de tekst van de gebruiker.
+                                if (part.type === 'text' && message.role === 'user') {
                                     return <span key={index}>{part.text}</span>;
                                 }
-
+                                // Toon de vacaturekaartjes bij toolresultaten.
                                 if (
                                     part.type === 'tool-zoekVacatures' ||
                                     part.type === 'tool-analyseerVacature'

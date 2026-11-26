@@ -29,6 +29,10 @@ Je bent een behulpzame Nederlandstalige assistent.
 - Gebruik geen tool voor algemene vragen.
 - Verzin nooit vacaturegegevens.
 - Als informatie ontbreekt, geef aan dat deze onbekend is.
+- Als je de tool zoekVacatures gebruikt, herhaal de gevonden vacatures
+  niet in je tekstuele antwoord. De vacaturekaartjes worden automatisch getoond.
+- Geef na het zoeken alleen een korte introductie of conclusie.
+- Neem geen vacaturetitels, links, salarissen of omschrijvingen opnieuw over.
 `;
   const TEMPERATURE = 0.7
   const MAX_OUTPUT_TOKENS = 500

@@ -164,8 +164,16 @@ Zorg ervoor dat je applicatie minimaal aan de volgende eisen voldoet:
 > **Beantwoord daarna de volgende vragen:**
 >
 > 1. Een API-key staat in `.env.local` en wordt alleen op de server gebruikt. Leg uit hoe zo'n key toch zou kunnen uitlekken via een tool, en wat je hebt gedaan om dat te voorkomen.
+
+Als een technische foutmelding wordt gestuurd kan daar een key of url worden meegestuurd. In mijn ,env.local staant geen NEXT_PUBLIC_ prefix
+
 > 2. Wat zag de gebruiker in je chat toen je een fout van de API testte? En wat zei het model?
+
+Mmm dit moet ik uitzoeken, ik heb een gedicht ingevoerd en de api doet er niets mee. Ze geeft geen response en je kunt wel een nieuw citaat invoeren.
+
 > 3. Waarom is het belangrijk dat een request naar een externe API een timeout heeft?
+
+Anders blijft ze zoeken en wet gebruiker niet wat er aan de hand is
 
 ### 5. Test je applicatie met lastige vragen
 
