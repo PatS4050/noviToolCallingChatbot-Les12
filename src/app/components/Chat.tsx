@@ -1,21 +1,22 @@
 'use client'
 
 import {useChat} from "@ai-sdk/react";
-import type {UIMessage} from "ai";
+// import type {UIMessage} from "ai";
+import type { ChatMessage } from '@/lib/tools';
 import {useState} from "react";
 // Aangepast: de knop gebruikt nu de Server Action die analyseert én opslaat
 import {analyseerEnBewaarVacature} from "@/lib/vacature/actions";
 import type {Vacature} from "@/lib/vacature/schema";
 import VacatureKaart from "@/app/components/VacatureKaart";
-
+import ToolWeergave from '@/app/components/ToolWeergave';
 type ChatProps = {
     id: string;
-    initialMessages?: UIMessage[];
+    initialMessages?: ChatMessage[];
 };
 
 export default function Chat ({ id, initialMessages }: ChatProps) {
     // TODO: geef useChat je eigen berichttype mee, bijvoorbeeld useChat<ChatMessage>(...), zodat de tool-parts getypeerd zijn
-    const { messages, sendMessage, status, error, stop, regenerate } = useChat({ id, messages: initialMessages});
+    const { messages, sendMessage, status, error, stop, regenerate } = useChat<ChatMessage>({ id, messages: initialMessages });
     const isLoading = status === 'submitted' || status === 'streaming';
     const [input, setInput] = useState('');
 
@@ -71,9 +72,24 @@ export default function Chat ({ id, initialMessages }: ChatProps) {
                             }
                         >
                             {/* TODO: toon naast text-parts ook de tool-parts (part.type begint met 'tool-'), met <ToolWeergave part={part} /> */}
-                            {message.parts.map((part, index) =>
-                                part.type === 'text' ? <span key={index}>{part.text}</span> : null,
-                            )}
+                            {/*DONE*/}
+                            {/*{message.parts.map((part, index) =>*/}
+                            {/*    part.type === 'text' ? <span key={index}>{part.text}</span> : null,*/}
+                            {/*)}*/}
+                            {message.parts.map((part, index) => {
+                                if (part.type === 'text') {
+                                    return <span key={index}>{part.text}</span>;
+                                }
+
+                                if (
+                                    part.type === 'tool-zoekVacatures' ||
+                                    part.type === 'tool-analyseerVacature'
+                                ) {
+                                    return <ToolWeergave key={index} part={part} />;
+                                }
+
+                                return null;
+                            })}
                         </div>
                     </div>
                 ))}

@@ -9,8 +9,9 @@ import {
   type UIMessage,
 } from 'ai';
 import {saveChat} from "@/lib/chat/cruds";
-import { zoekVacatures } from '@/lib/tools/zoekVacatures';
-import { analyseerVacature } from '@/lib/tools/analyseerVacature';
+// import { zoekVacatures } from '@/lib/tools/zoekVacatures';
+// import { analyseerVacature } from '@/lib/tools/analyseerVacature';
+import { tools, type ChatMessage } from '@/lib/tools';
 
 export async function POST(request: Request) {
   // TODO: pas de instructies aan, zodat de assistent ook je tools mag gebruiken en geen vacatures verzint
@@ -40,7 +41,7 @@ Je bent een behulpzame Nederlandstalige assistent.
   }
 
   try {
-    const { id, messages }: {id: string, messages: UIMessage[] } = await request.json();
+    const { id, messages }: {id: string, messages: ChatMessage[] } = await request.json();
 
     const recentMessages = messages.slice(-10);
 
@@ -52,10 +53,8 @@ Je bent een behulpzame Nederlandstalige assistent.
       maxOutputTokens: MAX_OUTPUT_TOKENS,
       // TODO: voeg je tools toe, bijvoorbeeld tools: { zoekVacatures, analyseerVacature }
       //DONE
-      tools: {
-        zoekVacatures,
-        analyseerVacature,
-      },
+      //
+      tools,
       // TODO: laat het model meerdere stappen zetten met stopWhen: isStepCount(...)
       //DONE
       stopWhen: stepCountIs(5),

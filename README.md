@@ -94,8 +94,16 @@ Zorg ervoor dat je applicatie minimaal aan de volgende eisen voldoet:
 > **Beantwoord daarna de volgende vragen:**
 >
 > 1. In Les 11 beschreef je met een Zod-schema de output van het model. Nu beschrijf je met een Zod-schema de input van een tool. Wat is het verschil in wie het object invult en wat er daarna mee gebeurt?
+
+In Les 11 structureer je de gevonden vacatures volgens een gelijk stramien. De ouput van je API wordt gestructureerd naar een object. Bij deze applicatie wordt het schema gebruikt om de input te controleren of het voldoet aan het schema.
+
 > 2. Hoe zorg je ervoor dat het model de juiste tool kiest? Geef een voorbeeld van een `description` of instructie die je hebt aangepast omdat het model de verkeerde keuze maakte.
-> 3. Wanneer zou je voor deze functionaliteit liever een knop of formulier gebruiken met een Server Action, en wanneer een tool?
+
+Dat doe je met je descriptions, daarin maak je onderscheid tussen de tools. Voorbeeld:"Gebruik deze tool om een volledige vacaturetekst te analyseren die de gebruiker heeft geplakt." Je geeft aan dat koe deze tool gebruikt als ze geanalyseerd moet worden en als de gebruiker een stuk tekst heeft geplakt.
+
+> 3. Wanneer zou je voor deze functionaliteit liever een knop of formulier gebruiken met een Server Action, en wanneer een tool? 
+
+Een knop als de gebruiker bepaalt of er geanalyseerd moet worden en een tool om de agent te laten bepalen.
 
 ### 3. Toon de tools in je chat
 
@@ -123,8 +131,16 @@ Zorg ervoor dat je applicatie minimaal aan de volgende eisen voldoet:
 > **Beantwoord daarna de volgende vragen:**
 >
 > 1. Welke states doorloopt een tool-part, en wat ziet de gebruiker bij elke state in jouw chat?
+
+Inputs-treaming, input-available - laadmelding, output-available - vacaturekaart.
+
 > 2. Waarom kun je `part.output` pas veilig gebruiken als de state `output-available` is?
+
+part.output is pas beschikbaar is als de tool succesvol is uitgevoerd.
+
 > 3. Voor welke weergave heb je gekozen, en waarom past die bij jouw applicatie?
+
+k heb gekozen voor een eigen component per tool. Voor het zoeken naar vacatures gebruik ik VacatureLijst en voor het analyseren van een vacature gebruik ik VacatureKaart.
 
 ### 4. Handel fouten netjes af
 
