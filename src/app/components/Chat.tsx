@@ -1,21 +1,30 @@
 'use client'
 
 import {useChat} from "@ai-sdk/react";
-import type {UIMessage} from "ai";
+// import type {UIMessage} from "ai";
+import type { ChatMessage } from '@/lib/tools';
 import {useState} from "react";
 // Aangepast: de knop gebruikt nu de Server Action die analyseert én opslaat
 import {analyseerEnBewaarVacature} from "@/lib/vacature/actions";
 import type {Vacature} from "@/lib/vacature/schema";
 import VacatureKaart from "@/app/components/VacatureKaart";
+import ToolWeergave from '@/app/components/ToolWeergave';
+const GEEN_VACATURES = 'Uw zoekopdracht heeft geen vacatures opgeleverd.';
 
 type ChatProps = {
     id: string;
-    initialMessages?: UIMessage[];
+    initialMessages?: ChatMessage[];
 };
+
+function heeftVacatureTool(message: ChatMessage) {
+    return message.parts.some(
+        (part) => part.type === 'tool-zoekVacatures' || part.type === 'tool-analyseerVacature',
+    );
+}
 
 export default function Chat ({ id, initialMessages }: ChatProps) {
     // TODO: geef useChat je eigen berichttype mee, bijvoorbeeld useChat<ChatMessage>(...), zodat de tool-parts getypeerd zijn
-    const { messages, sendMessage, status, error, stop, regenerate } = useChat({ id, messages: initialMessages});
+    const { messages, sendMessage, status, error, stop, regenerate } = useChat<ChatMessage>({ id, messages: initialMessages });
     const isLoading = status === 'submitted' || status === 'streaming';
     const [input, setInput] = useState('');
 
@@ -51,14 +60,21 @@ export default function Chat ({ id, initialMessages }: ChatProps) {
 
     return (
         <main className="mx-auto flex h-screen w-full max-w-2xl flex-col p-4">
-            <h1 className="mb-4 text-2xl font-bold">Les 9 Chatbot</h1>
+            <h1 className="mb-4 text-2xl font-bold">Les 12 Chatbot</h1>
 
             <div className="flex-1 space-y-3 overflow-y-auto rounded-lg border border-gray-200 bg-white p-4">
                 {messages.length === 0 && (
                     <p className="text-gray-400">Stel een vraag om te beginnen.</p>
                 )}
 
-                {messages.map((message) => (
+                {messages.map((message, messageIndex) => {
+                    const isLaatste = messageIndex === messages.length - 1;
+                    const toonStandaardtekst =
+                        message.role === 'assistant' &&
+                        !heeftVacatureTool(message) &&
+                        !(isLaatste && isLoading);
+
+                    return (
                     <div
                         key={message.id}
                         className={message.role === 'user' ? 'flex justify-end' : 'flex justify-start'}
@@ -71,12 +87,33 @@ export default function Chat ({ id, initialMessages }: ChatProps) {
                             }
                         >
                             {/* TODO: toon naast text-parts ook de tool-parts (part.type begint met 'tool-'), met <ToolWeergave part={part} /> */}
-                            {message.parts.map((part, index) =>
-                                part.type === 'text' ? <span key={index}>{part.text}</span> : null,
-                            )}
+                            {/*DONE*/}
+                            {/*{message.parts.map((part, index) =>*/}
+                            {/*    part.type === 'text' ? <span key={index}>{part.text}</span> : null,*/}
+                            {/*)}*/}
+                            {message.parts.map((part, index) => {
+                                // if (part.type === 'text') {
+                                //     return <span key={index}>{part.text}</span>;
+                                // }
+                                // Toon altijd de tekst van de gebruiker.
+                                if (part.type === 'text' && message.role === 'user') {
+                                    return <span key={index}>{part.text}</span>;
+                                }
+                                // Toon de vacaturekaartjes bij toolresultaten.
+                                if (
+                                    part.type === 'tool-zoekVacatures' ||
+                                    part.type === 'tool-analyseerVacature'
+                                ) {
+                                    return <ToolWeergave key={index} part={part} />;
+                                }
+
+                                return null;
+                            })}
+                            {toonStandaardtekst && <span>{GEEN_VACATURES}</span>}
                         </div>
                     </div>
-                ))}
+                    );
+                })}
 
                 {status === 'submitted' && (
                     <p className="animate-pulse text-gray-500">Aan het nadenken...</p>

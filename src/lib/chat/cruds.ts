@@ -1,6 +1,10 @@
-import {createSupabaseServerClient} from "@/lib/supabase/server";
-import {generateId, type UIMessage} from "ai";
-import {Json} from "@/lib/supabase/database.types";
+// import {createSupabaseServerClient} from "@/lib/supabase/server";
+// import {generateId, type UIMessage} from "ai";
+// import {Json} from "@/lib/supabase/database.types";
+import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { generateId } from 'ai';
+import type { ChatMessage } from '@/lib/tools';
+import type { Json } from '@/lib/supabase/database.types';
 
 export async function getLatestChat() {
     const supabase = createSupabaseServerClient();
@@ -17,13 +21,13 @@ export async function getLatestChat() {
 
     return {
         id: data.id,
-        messages: (data.messages as unknown as UIMessage[]).map((message) =>
+        messages: (data.messages as unknown as ChatMessage[]).map((message) =>
             message.id ? message : { ...message, id: generateId() }
         ),
     };
 }
 
-export async function saveChat(id: string, messages: UIMessage[]) {
+export async function saveChat(id: string, messages: ChatMessage[]) {
     const supabase = createSupabaseServerClient();
     const { error } = await supabase
         .from("chats_ai_bot")
