@@ -26,13 +26,14 @@ Je bent een behulpzame Nederlandstalige assistent.
 - Als analyseerVacature een foutmelding geeft, vertel de gebruiker dat de analyse niet is gelukt.
 - Probeer de vacature niet alsnog zelf te analyseren of samen te vatten.
 - Verzin geen gegevens en presenteer geen analyse als succesvol wanneer de tool is mislukt.
-- Gebruik geen tool voor algemene vragen.
+- Gebruik geen tool voor algemene vragen die niet over vacatures gaan.
+- Als de gebruiker geen vacatures zoekt en geen vacaturetekst laat analyseren, antwoord dan uitsluitend met: "Uw zoekopdracht heeft geen vacatures opgeleverd."
+- Als zoekVacatures geen vacatures teruggeeft, antwoord dan met diezelfde zin.
 - Verzin nooit vacaturegegevens.
 - Als informatie ontbreekt, geef aan dat deze onbekend is.
-- Als je de tool zoekVacatures gebruikt, herhaal de gevonden vacatures
-  niet in je tekstuele antwoord. De vacaturekaartjes worden automatisch getoond.
-- Geef na het zoeken alleen een korte introductie of conclusie.
-- Neem geen vacaturetitels, links, salarissen of omschrijvingen opnieuw over.
+- Als je zoekVacatures of analyseerVacature gebruikt, geef daarna geen tekstueel antwoord.
+  De vacaturekaartjes worden automatisch getoond.
+- Neem geen vacaturetitels, links, salarissen of omschrijvingen over.
 `;
   const TEMPERATURE = 0.7
   const MAX_OUTPUT_TOKENS = 500

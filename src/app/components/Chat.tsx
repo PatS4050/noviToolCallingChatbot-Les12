@@ -9,10 +9,18 @@ import {analyseerEnBewaarVacature} from "@/lib/vacature/actions";
 import type {Vacature} from "@/lib/vacature/schema";
 import VacatureKaart from "@/app/components/VacatureKaart";
 import ToolWeergave from '@/app/components/ToolWeergave';
+const GEEN_VACATURES = 'Uw zoekopdracht heeft geen vacatures opgeleverd.';
+
 type ChatProps = {
     id: string;
     initialMessages?: ChatMessage[];
 };
+
+function heeftVacatureTool(message: ChatMessage) {
+    return message.parts.some(
+        (part) => part.type === 'tool-zoekVacatures' || part.type === 'tool-analyseerVacature',
+    );
+}
 
 export default function Chat ({ id, initialMessages }: ChatProps) {
     // TODO: geef useChat je eigen berichttype mee, bijvoorbeeld useChat<ChatMessage>(...), zodat de tool-parts getypeerd zijn
@@ -59,7 +67,14 @@ export default function Chat ({ id, initialMessages }: ChatProps) {
                     <p className="text-gray-400">Stel een vraag om te beginnen.</p>
                 )}
 
-                {messages.map((message) => (
+                {messages.map((message, messageIndex) => {
+                    const isLaatste = messageIndex === messages.length - 1;
+                    const toonStandaardtekst =
+                        message.role === 'assistant' &&
+                        !heeftVacatureTool(message) &&
+                        !(isLaatste && isLoading);
+
+                    return (
                     <div
                         key={message.id}
                         className={message.role === 'user' ? 'flex justify-end' : 'flex justify-start'}
@@ -94,9 +109,11 @@ export default function Chat ({ id, initialMessages }: ChatProps) {
 
                                 return null;
                             })}
+                            {toonStandaardtekst && <span>{GEEN_VACATURES}</span>}
                         </div>
                     </div>
-                ))}
+                    );
+                })}
 
                 {status === 'submitted' && (
                     <p className="animate-pulse text-gray-500">Aan het nadenken...</p>
